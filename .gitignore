@@ -1,0 +1,9 @@
+# IDE staff
+/.vscode
+/.idea
+
+# macOS staff
+/**/.DS_Store
+
+/target
+/Cargo.lock

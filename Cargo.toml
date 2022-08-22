@@ -1,0 +1,15 @@
+[package]
+name = "tui-markup-ansi-macro"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+proc-macro = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tui-markup = { version = "0.2.1", features = ["ansi"] }
+ansi_term = "0.12.1"
+litrs = "0.2.3"
+proc-macro-error = { version = "1.0.4", default-features = false }
