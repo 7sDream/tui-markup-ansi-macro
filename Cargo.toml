@@ -1,7 +1,16 @@
 [package]
 name = "tui-markup-ansi-macro"
 version = "0.1.0"
+authors = ["7sDream <i@7sdre.am>"]
 edition = "2021"
+description = "a macro to generate styled ansi escape sequence from markup language"
+documentation = "https://docs.rs/tui-markup-ansi-macro"
+readme = "README.md"
+homepage = "https://github.com/7sDream/tui-markup-ansi-macro"
+repository = "https://github.com/7sDream/tui-markup-ansi-macro"
+license = "BSD-3-Clause-Clear"
+keywords = ["ansi", "terminal", "color", "markup", "text", "parser"]
+categories = ["text-processing"]
 
 [lib]
 proc-macro = true

@@ -1,3 +1,10 @@
+#![warn(clippy::all)]
+#![warn(missing_docs, missing_debug_implementations)]
+#![deny(warnings)]
+#![cfg_attr(not(test), forbid(unsafe_code))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
+#![doc = include_str!("../README.md")]
+
 extern crate proc_macro;
 
 use std::collections::HashMap;
@@ -33,10 +40,29 @@ impl CustomTagParser for AnsiMacroCustomTags {
     }
 }
 
+/// The macro to generate ansi escape sequence.
+///
+/// ## Macro Syntax
+///
+/// `ansi!("markup source")`
+///
+/// Or you need custom tags:
+///
+/// ```none
+/// ansi!(
+///     "markup source",
+///     "custom tag" => "builtin style tags",
+///     "custom tag" => "builtin style tags",
+///     ...
+/// )
+/// ```
+///
 #[proc_macro_error]
 #[proc_macro]
 pub fn ansi(ts: TokenStream) -> TokenStream {
     let mut tsi = ts.into_iter();
+
+    // ===== Source text =====
 
     let tt = match tsi.next() {
         Some(tt) => tt,
@@ -57,14 +83,21 @@ pub fn ansi(ts: TokenStream) -> TokenStream {
 
     let mut custom_tags = AnsiMacroCustomTags::default();
 
+    // ===== Custom tags =====
+
     loop {
-        // ,
+        // ==== The sep `,` ====
+        // If is not a `,`, error.
+        // If nothing left, exit custom tag process
         match tsi.next() {
             Some(TokenTree::Punct(p)) if p.as_char() == ',' => (),
             Some(_) => abort!(span, "expect comma after here"),
             None => break,
         };
 
+        // ===== process a custom tag =====
+
+        // ===== the tag ======
         let tag = match tsi.next() {
             Some(tt) => tt,
             None => break,
@@ -78,6 +111,8 @@ pub fn ansi(ts: TokenStream) -> TokenStream {
             }
             Err(e) => return e.to_compile_error(),
         };
+
+        // ===== The => =====
 
         // =
         let next = tsi.next();
@@ -95,6 +130,8 @@ pub fn ansi(ts: TokenStream) -> TokenStream {
 
         span = gt.span();
 
+        // ===== The style tags =====
+
         let style = match tsi.next() {
             Some(tt) => tt,
             None => abort!(span, "expect style after arrow"),
@@ -106,6 +143,8 @@ pub fn ansi(ts: TokenStream) -> TokenStream {
             }
             Err(e) => return e.to_compile_error(),
         };
+
+        // ===== Insert a custom tag into our custom tag parser =====
 
         let style_tags = style_lit.value().split(',').collect::<Vec<_>>();
         let final_style = style_tags.into_iter().fold(Style::default(), |style, s| {
@@ -119,6 +158,8 @@ pub fn ansi(ts: TokenStream) -> TokenStream {
         custom_tags.insert(tag_lit.value().to_string(), final_style);
     }
 
+    // ===== Compile markup source using generator with custom tag parser =====
+
     let gen = ANSIStringsGenerator::new(custom_tags);
 
     let result = match compile_with(literal.value(), gen) {
@@ -126,7 +167,8 @@ pub fn ansi(ts: TokenStream) -> TokenStream {
         Err(e) => abort!(span, e.to_string()),
     };
 
-    let output = ANSIStrings(&result).to_string();
+    // ===== generate final string literal ====
 
+    let output = ANSIStrings(&result).to_string();
     TokenStream::from(TokenTree::Literal(proc_macro::Literal::string(&output)))
 }
