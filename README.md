@@ -54,4 +54,4 @@ BSD-3-Clause-Clear, see [LICENSE].
 [example-output]: https://rikka.7sdre.am/files/1ac47e60-6f10-4e5f-b4d2-262afaceecb7.png
 [tui-markup-syntax]: https://github.com/7sDream/tui-markup#markup-syntax
 [ansi-tags]: https://github.com/7sDream/tui-markup/blob/master/docs/ansi-tags.ebnf
-[LICENSE]: https://github.com/7sDream/tui-markup/blob/master/LICENSE
+[LICENSE]: https://github.com/7sDream/tui-markup-ansi-macro/blob/master/LICENSE
