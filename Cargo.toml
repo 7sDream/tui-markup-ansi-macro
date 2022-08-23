@@ -9,7 +9,7 @@ readme = "README.md"
 homepage = "https://github.com/7sDream/tui-markup-ansi-macro"
 repository = "https://github.com/7sDream/tui-markup-ansi-macro"
 license = "BSD-3-Clause-Clear"
-keywords = ["ansi", "terminal", "color", "markup", "text", "parser"]
+keywords = ["ansi", "terminal", "color", "markup", "text"]
 categories = ["text-processing"]
 
 [lib]
