@@ -14,10 +14,10 @@ This macro compile your source at compile time, so it has no runtime overhead.
 ```rust
 use tui_markup_ansi_macro::ansi;
 
-let generated: &'static str = ansi!("Press <blue Space> to <cyan Jump> over the <bg:yellow,i fox>");
-let handwrite = "Press \u{001b}[34mSpace\u{001b}[0m to \u{001b}[36mJump\u{001b}[0m over the \u{001b}[3;43mfox\u{001b}[0m";
+let generated = ansi!("Press <blue Space> to <cyan Jump> over the <bg:yellow,i fox>");
+let hardcode = "Press \u{001b}[34mSpace\u{001b}[0m to \u{001b}[36mJump\u{001b}[0m over the \u{001b}[3;43mfox\u{001b}[0m";
 // Those two are equivalent.
-assert_eq!(generated, handwrite);
+assert_eq!(generated, hardcode);
 
 // Use custom tag
 let generated = ansi!(
@@ -26,7 +26,7 @@ let generated = ansi!(
     "action" => "cyan",
     "enemy" => "bg:yellow,i",
 );
-assert_eq!(generated, handwrite);
+assert_eq!(generated, hardcode);
 
 println!("{}", generated);
 ```
